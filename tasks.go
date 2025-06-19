@@ -427,6 +427,16 @@ func (p *Project) Tasks(client *Client, opts ...*Options) ([]*Task, *NextPage, e
 	return result, nextPage, err
 }
 
+// TasksWithQuery returns a list of tasks in this project, with the specified query parameters
+func (p *Project) TasksWithQuery(client *Client, query any, opts ...*Options) ([]*Task, *NextPage, error) {
+	client.trace("Listing tasks in %q", p.Name)
+	var result []*Task
+
+	// Make the request
+	nextPage, err := client.get(fmt.Sprintf("/projects/%s/tasks", p.ID), query, &result, opts...)
+	return result, nextPage, err
+}
+
 // Tasks returns a list of tasks in this section. Board view only.
 func (s *Section) Tasks(client *Client, opts ...*Options) ([]*Task, *NextPage, error) {
 	client.trace("Listing tasks in %q", s.Name)
